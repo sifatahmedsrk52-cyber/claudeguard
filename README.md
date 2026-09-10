@@ -4,12 +4,13 @@ A free, zero-setup safety tool for Claude Code / Claude Desktop users on Windows
 your local `~/.claude` data, diagnoses a real and currently-unfixed Anthropic bug, and
 verifies nothing got lost after a reinstall.
 
-## Status: built 2026-08-26, not launched
+## Status: built 2026-08-26, launched 2026-09-10
 
-Per this operator's Line 1 policy (see [PROJECTS.md](../../PROJECTS.md)): no second "own
-product" launches until fusebox validates with real paying users. This exists ready to go
-the moment that's true, or sooner if the policy is deliberately overridden - built now
-because the problem is real and the fix was cheap to build, not because it's launching yet.
+Originally built and held per this operator's Line 1 policy (no 2nd "own product" launch
+until fusebox validates with real paying users) - fusebox still has zero paying customers,
+and the operator made a deliberate, informed call to launch anyway rather than wait
+indefinitely. Still capped at 2 products total for this operator, ever (see
+[PROJECTS.md](../../PROJECTS.md)) - this is the 2nd and final slot in that line.
 
 ## The problem this fixes (real, documented, not guessed)
 
