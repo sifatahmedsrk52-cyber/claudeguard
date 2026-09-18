@@ -140,11 +140,14 @@ tripped things up, not a guess at what might go wrong.
 
 Windows PowerShell 5.1+ (built in on any modern Windows install). No other dependencies.
 
-## What's next, if/when this launches
+## Distribution status
 
-Distribution channels already researched and working for fusebox (dev.to, Indie Hackers,
-relevant subreddits/X threads about this exact error) apply directly here, since the
-audience (Claude Code users) is more precisely targetable than fusebox's broader "solo
-OpenAI API users." No monetization built in yet - this started as a free safety tool, and
-whether it stays free-only or gets a paid tier (e.g. scheduled cloud backup) is a decision
-for when it actually launches, not now.
+Launched 2026-09-10, code/repo 100% done. Real usage signal exists without any push yet:
+GitHub's own Insights → Traffic shows real `git clone` activity (double digits, multiple
+unique cloners, growing week over week) despite 0 stars and almost no page views - people are
+pulling this directly, not discovering it by browsing. Distribution channels that already
+worked for fusebox (dev.to, Indie Hackers, relevant Claude Code subreddits/X threads about
+this exact MSIX bug) apply directly here, arguably better - the audience (Claude Code/Desktop
+users on Windows) is more precisely targetable than fusebox's broader "solo OpenAI API users."
+No monetization built in - free safety tool; whether that ever changes (e.g. a paid scheduled
+cloud-backup tier) is an open decision, not urgent.
