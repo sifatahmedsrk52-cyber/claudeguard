@@ -1,16 +1,21 @@
 # ClaudeGuard
 
-A free, zero-setup safety tool for Claude Code / Claude Desktop users on Windows: backs up
-your local `~/.claude` data, diagnoses a real and currently-unfixed Anthropic bug, and
-verifies nothing got lost after a reinstall.
+A zero-setup safety tool for Claude Code / Claude Desktop users on Windows: backs up your
+local `~/.claude` data, diagnoses a real and currently-unfixed Anthropic bug, and verifies
+nothing got lost after a reinstall.
 
-## Status: built 2026-08-26, launched 2026-09-10
+**[Get ClaudeGuard - $9.99, one-time, instant download](https://sidheart.gumroad.com/l/claudeguard)**
 
-Originally built and held per this operator's Line 1 policy (no 2nd "own product" launch
-until fusebox validates with real paying users) - fusebox still has zero paying customers,
-and the operator made a deliberate, informed call to launch anyway rather than wait
-indefinitely. Still capped at 2 products total for this operator, ever (see
-[PROJECTS.md](../../PROJECTS.md)) - this is the 2nd and final slot in that line.
+## Status: built 2026-08-26, launched free 2026-09-10, moved to paid 2026-09-20
+
+Originally launched as a free tool to build trust before this operator's other product
+(fusebox) had any paying customers. Real usage signal was there from day one - GitHub's own
+Traffic insights showed genuine `git clone` activity, growing week over week, with 0 stars -
+people were pulling this directly, not discovering it by browsing. That confirmed real demand,
+so the tool moved to a paid download rather than staying free indefinitely: a useful tool that
+solves a real, documented problem is worth paying for, and free was never the plan long-term.
+Still capped at 2 products total for this operator, ever (see [PROJECTS.md](../../PROJECTS.md))
+- this is the 2nd and final slot in that line.
 
 ## The problem this fixes (real, documented, not guessed)
 
@@ -62,7 +67,9 @@ event log, HVCI state) - which a data-backup tool has no reason to touch - and i
 double-clickable script with zero setup (no git repo, no config file, no dependencies beyond
 PowerShell) for people who just want a yes/no answer and a safety net, not a workflow.
 
-## Commands
+## What you get
+
+**[sidheart.gumroad.com/l/claudeguard](https://sidheart.gumroad.com/l/claudeguard) - $9.99, one-time payment, instant download.**
 
 ```powershell
 .\ClaudeGuard.ps1 diagnose   # read-only. Checks package status, Code Integrity event log,
@@ -76,7 +83,9 @@ PowerShell) for people who just want a yes/no answer and a safety net, not a wor
                              # manifest and reports exactly what's missing, if anything.
 ```
 
-Default (no argument) runs `diagnose`.
+Default (no argument) runs `diagnose`. Single script, no dependencies beyond PowerShell, no
+telemetry, no cloud account - runs entirely on your machine. 30-day money-back guarantee via
+Gumroad.
 
 ## Applying the permanent fix
 
@@ -142,12 +151,11 @@ Windows PowerShell 5.1+ (built in on any modern Windows install). No other depen
 
 ## Distribution status
 
-Launched 2026-09-10, code/repo 100% done. Real usage signal exists without any push yet:
-GitHub's own Insights → Traffic shows real `git clone` activity (double digits, multiple
-unique cloners, growing week over week) despite 0 stars and almost no page views - people are
-pulling this directly, not discovering it by browsing. Distribution channels that already
-worked for fusebox (dev.to, Indie Hackers, relevant Claude Code subreddits/X threads about
-this exact MSIX bug) apply directly here, arguably better - the audience (Claude Code/Desktop
-users on Windows) is more precisely targetable than fusebox's broader "solo OpenAI API users."
-No monetization built in - free safety tool; whether that ever changes (e.g. a paid scheduled
-cloud-backup tier) is an open decision, not urgent.
+Launched free 2026-09-10, moved to a $9.99 paid download on Gumroad 2026-09-20. The working
+script (`diagnose`/`backup`/`verify`) is no longer distributed free from this repo - this
+README exists to document the real bug and prove the problem, not to give away the fix.
+**[Buy it here.](https://sidheart.gumroad.com/l/claudeguard)** Distribution channels that
+already worked for fusebox (dev.to, Indie Hackers, relevant Claude Code subreddits/X threads
+about this exact MSIX bug) apply directly here, arguably better - the audience (Claude
+Code/Desktop users on Windows) is more precisely targetable than fusebox's broader "solo
+OpenAI API users."
