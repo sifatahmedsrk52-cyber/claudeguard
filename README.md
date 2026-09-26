@@ -53,6 +53,35 @@ MSIX package is fully uninstalled (`Get-AppxPackage *Claude*` returns nothing) a
 Desktop now runs from the unpackaged Squirrel build with no package-integrity status left to
 corrupt.
 
+## Update 2026-09-27: the upstream crash may now be patched for new installs - here's what that does and doesn't mean
+
+Checked [anthropics/claude-code#82134](https://github.com/anthropics/claude-code/issues/82134) and
+[#81341](https://github.com/anthropics/claude-code/issues/81341) fresh rather than assuming this
+README's diagnosis is still current. A detailed, independently-verified comment on #82134
+(2026-09-23) traces the actual fix: [electron/electron#53174](https://github.com/electron/electron/pull/53174)
+("preload SwiftShader before the GPU sandbox locks down again") was backported into Electron
+44.1.0+, and Claude Desktop build **2.7032.0.0** (auto-updated to on 2026-09-23) bundles Electron
+44.4.3 - late enough to carry it. On that build, `vk_swiftshader.dll` loads into the GPU process
+*before* Code Integrity's Microsoft-signed-only policy turns on, so the block this whole tool is
+built around can no longer happen.
+
+**What this changes and what it doesn't:**
+- If you're already on **2.7032.0.0 or later**, this specific crash shouldn't recur - check your
+  version in Claude Desktop's About screen before assuming you need this tool for *this* problem.
+- The MSIX package still ships without `AppxMetadata\CodeIntegrity.cat` (confirmed as of
+  2026-09-02) - the fix is Electron preloading the DLL early, not Anthropic's package catalog
+  being fixed. A future Electron regression on the preload timing would reopen this exact bug.
+- **If you're already stuck in `Modified, NeedsRemediation`, updating does not clear it on its
+  own** - that flag is a claim about files already on disk, and normal repair/re-registration
+  doesn't touch it. A same-version reinstall over the top
+  (`Add-AppxPackage -Path <same-version>.msix -ForceApplicationShutdown -ForceUpdateFromAnyVersion`)
+  is reported working for that specific stuck state without a full remove/reinstall - but the
+  chat-history-loss risk on *any* reinstall/remove path (see below) still applies, so back up
+  first regardless of which recovery path you take.
+- ClaudeGuard's `diagnose` command still correctly detects whether *your* machine has hit this
+  (Code Integrity event log, package status), regardless of which build caused it or which fix
+  path applies - that part of the tool doesn't depend on this bug staying unfixed.
+
 ## What this is NOT
 
 [jtklinger/claude-code-backup-guide](https://github.com/jtklinger/claude-code-backup-guide)
