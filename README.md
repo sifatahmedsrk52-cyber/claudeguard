@@ -82,6 +82,27 @@ built around can no longer happen.
   (Code Integrity event log, package status), regardless of which build caused it or which fix
   path applies - that part of the tool doesn't depend on this bug staying unfixed.
 
+## Update 2026-09-30: a second, independent trigger for the exact same corruption - v1.1 ships today
+
+New research turned up a second way to hit the identical Code Integrity corruption pattern,
+completely independent of the `vk_swiftshader.dll` trigger above: **Windows Auto Super
+Resolution** (a display-driver feature, Settings > System > Display > Graphics) can inject
+`SuperResExt.dll` into any running Electron/Chromium app - including Claude Desktop - and
+Code Integrity blocks it the same way it blocks `vk_swiftshader.dll`: same event 3033, same
+GPU-process crash, same `Modified, NeedsRemediation` package flag. Upstream tracked at
+[electron/electron#53859](https://github.com/electron/electron/issues/53859).
+
+This matters because a machine with Auto SR enabled can hit this bug even if it's fully
+patched against the original `vk_swiftshader.dll` trigger (see the 2026-09-27 update above) -
+it's a second door into the same room, not a variant of the first door.
+
+**`ClaudeGuard.ps1 diagnose` now checks for both trigger DLLs**, not just the original one -
+if your Code Integrity event log names either `vk_swiftshader.dll` or `SuperResExt.dll`, the
+tool flags it and tells you which one. `backup` and `verify` are unaffected - the corruption
+looks identical from Claude Code's data side regardless of which DLL triggered it, so the
+same backup/verify logic already covered both cases; only `diagnose`'s detection needed to
+widen its net.
+
 ## What this is NOT
 
 [jtklinger/claude-code-backup-guide](https://github.com/jtklinger/claude-code-backup-guide)
