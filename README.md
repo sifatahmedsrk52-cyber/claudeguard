@@ -82,26 +82,30 @@ built around can no longer happen.
   (Code Integrity event log, package status), regardless of which build caused it or which fix
   path applies - that part of the tool doesn't depend on this bug staying unfixed.
 
-## Update 2026-09-30: a second, independent trigger for the exact same corruption - v1.1 ships today
+## Update 2026-09-30: a second, independent trigger - Copilot+ ARM64 machines only - v1.1 ships today
 
 New research turned up a second way to hit the identical Code Integrity corruption pattern,
-completely independent of the `vk_swiftshader.dll` trigger above: **Windows Auto Super
-Resolution** (a display-driver feature, Settings > System > Display > Graphics) can inject
-`SuperResExt.dll` into any running Electron/Chromium app - including Claude Desktop - and
-Code Integrity blocks it the same way it blocks `vk_swiftshader.dll`: same event 3033, same
-GPU-process crash, same `Modified, NeedsRemediation` package flag. Upstream tracked at
-[electron/electron#53859](https://github.com/electron/electron/issues/53859).
+completely independent of the `vk_swiftshader.dll` trigger above - but **specific to Copilot+
+ARM64 hardware (Qualcomm Snapdragon), not a general Windows risk**. On these machines,
+**Windows Auto Super Resolution** (a Microsoft-shipped OS feature, not part of Claude
+Desktop's own package) injects `SuperResExt.dll` into every running Electron/Chromium app's
+GPU process - Code Integrity blocks it the same way it blocks `vk_swiftshader.dll`: same
+event 3033, same GPU-process crash loop, same fatal outcome for any MSIX-packaged app.
+Extensively diagnosed (A/B tested with the OS component fully removed, flag-bisected to rule
+out the GPU driver) at [electron/electron#53859](https://github.com/electron/electron/issues/53859) -
+credit to that report for the rigor; nothing here is independently re-derived, just folded in.
 
-This matters because a machine with Auto SR enabled can hit this bug even if it's fully
-patched against the original `vk_swiftshader.dll` trigger (see the 2026-09-27 update above) -
-it's a second door into the same room, not a variant of the first door.
+**Important correction from the original write-up assumption:** toggling Auto SR off in
+Windows Settings does **not** stop the injection - only fully uninstalling the
+`Microsoft.AutoSuperResolution` package does. This is a bigger ask than the reinstall/backup
+flow above, and it's Microsoft's component to fix, not Anthropic's - also filed with
+Microsoft directly: [Feedback Hub report](https://aka.ms/AA13dw5h).
 
-**`ClaudeGuard.ps1 diagnose` now checks for both trigger DLLs**, not just the original one -
-if your Code Integrity event log names either `vk_swiftshader.dll` or `SuperResExt.dll`, the
-tool flags it and tells you which one. `backup` and `verify` are unaffected - the corruption
-looks identical from Claude Code's data side regardless of which DLL triggered it, so the
-same backup/verify logic already covered both cases; only `diagnose`'s detection needed to
-widen its net.
+**`ClaudeGuard.ps1 diagnose` (v1.1) now checks the Code Integrity event log for both trigger
+DLLs** and tells you which one you're hitting, since the fix path differs (package
+reinstall/Squirrel-build switch for `vk_swiftshader.dll`, OS-component removal for
+`SuperResExt.dll`). `backup` and `verify` are unaffected - the risk to Claude Code's data is
+identical either way, so that logic already covered both cases.
 
 ## What this is NOT
 
